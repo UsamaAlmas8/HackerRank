@@ -1,0 +1,65 @@
+import java.io.*;
+import java.util.*;
+
+class Result {
+
+    public static List<Integer> gradingStudents(List<Integer> grades) {
+        List<Integer> result = new ArrayList<>();
+
+        for (int i = 0; i < grades.size(); i++) {
+            int grade = grades.get(i);
+
+            if (grade < 38) {
+                // fail, no rounding
+                result.add(grade);
+            } else {
+                int remainder = grade % 5;
+
+                if (remainder == 0) {
+                    // already multiple of 5
+                    result.add(grade);
+                } else {
+                    int newg = grade + (5 - remainder);
+                    int diff = newg - grade;
+
+                    if (diff < 3) {
+                        result.add(newg);
+                    } else {
+                        result.add(grade);
+                    }
+                }
+            }
+        }
+
+        return result;
+    }
+}
+
+public class Solution {
+    public static void main(String[] args) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
+
+        int gradesCount = Integer.parseInt(bufferedReader.readLine().trim());
+        List<Integer> grades = new ArrayList<>();
+
+        for (int i = 0; i < gradesCount; i++) {
+            int gradesItem = Integer.parseInt(bufferedReader.readLine().trim());
+            grades.add(gradesItem);
+        }
+
+        List<Integer> result = Result.gradingStudents(grades);
+
+        for (int i = 0; i < result.size(); i++) {
+            bufferedWriter.write(String.valueOf(result.get(i)));
+            if (i != result.size() - 1) {
+                bufferedWriter.write("\n");
+            }
+        }
+
+        bufferedWriter.newLine();
+
+        bufferedReader.close();
+        bufferedWriter.close();
+    }
+}
